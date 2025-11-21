@@ -16,6 +16,7 @@ addLayer("p", {
     gainMult() { // Calculate the multiplier for main currency from bonuses
         mult = new Decimal(1)
         if (hasUpgrade('p', 13)) mult = mult.times(upgradeEffect('p', 13))
+        if (hasUpgrade('p', 14)) mult = mult.times(upgradeEffect('p', 14))
         return mult
     },
     gainExp() { // Calculate the exponent on main currency from bonuses
@@ -49,6 +50,14 @@ addLayer("p", {
             cost: new Decimal(3),
             effect() {
                 return player.points.add(1).pow(0.15)
+            },
+        },
+            14: {
+            title: "Upgrade 4",
+            description: "Gain a power effect to point gain",
+            cost: new Decimal(3),
+            effect() {
+                return player.points.add(1).pow(1.5)
             },
         },
     },
