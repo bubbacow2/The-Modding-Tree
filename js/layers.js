@@ -1,5 +1,5 @@
 addLayer("p", {
-    name: "prestige", // This is optional, only used in a few places, If absent it just uses the layer id.
+    name: "dingus", // This is optional, only used in a few places, If absent it just uses the layer id.
     symbol: "P", // This appears on the layer's node. Default is the id with the first letter capitalized
     position: 0, // Horizontal position within a row. By default it uses the layer id and sorts in alphabetical order
     startData() { return {
@@ -8,13 +8,14 @@ addLayer("p", {
     }},
     color: "#596454ff",
     requires: new Decimal(10), // Can be a function that takes requirement increases into account
-    resource: "prestige points", // Name of prestige currency
+    resource: "dingus points", // Name of prestige currency
     baseResource: "points", // Name of resource prestige is based on
     baseAmount() {return player.points}, // Get the current amount of baseResource
     type: "normal", // normal: cost to gain currency depends on amount gained. static: cost depends on how much you already have
     exponent: 0.5, // Prestige currency exponent
     gainMult() { // Calculate the multiplier for main currency from bonuses
         mult = new Decimal(1)
+        if (hasUpgrade('p', 13)) mult = mult.times(upgradeEffect('p', 13))
         return mult
     },
     gainExp() { // Calculate the exponent on main currency from bonuses
@@ -27,13 +28,13 @@ addLayer("p", {
     layerShown(){return true},
     upgrades: {
         11: {
-            title: "Pits",
-            description: "Pooty",
+            title: "Upgrade 1",
+            description: "Double point gain",
             cost: new Decimal(1),
         },
         12: {
-            title: "Shoop",
-            description: "Fah",
+            title: "Upgrade 2",
+            description: "Gain a multiplier to point gain based on points",
             cost: new Decimal(2),
             effect() {
                 return player[this.layer].points.add(1).pow(0.5)
@@ -41,6 +42,14 @@ addLayer("p", {
             effectDisplay() { 
                 return format(upgradeEffect(this.layer, this.id))+"x" 
             }, // Add formatting to the effect
+        },
+        13: {
+            title: "Upgrade 3",
+            description: "Gain a power effect to point gain",
+            cost: new Decimal(3),
+            effect() {
+                return player.points.add(1).pow(0.15)
+            },
         },
     },
 })
