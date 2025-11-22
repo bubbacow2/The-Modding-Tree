@@ -66,7 +66,7 @@ addLayer("o", {
     color: "#6849b1ff",
     requires: new Decimal(10), // Can be a function that takes requirement increases into account
     resource: "ovulation points", // Name of prestige currency
-    baseResource: "points", // Name of resource prestige is based on
+    baseResource: "dingus points", // Name of resource prestige is based on
     baseAmount() {return player.points}, // Get the current amount of baseResource
     type: "normal", // normal: cost to gain currency depends on amount gained. static: cost depends on how much you already have
     exponent: 0.5, // Prestige currency exponent
@@ -86,12 +86,12 @@ addLayer("o", {
     upgrades: {
         11: {
             title: "Upgrade 1",
-            description: "Double point gain",
+            description: "Double dingus point gain",
             cost: new Decimal(1),
         },
         12: {
             title: "Upgrade 2",
-            description: "Gain a multiplier to point gain based on points",
+            description: "Gain a multiplier to dingus point gain based on points",
             cost: new Decimal(2),
             effect() {
                 return player[this.layer].points.add(1).pow(0.5)
@@ -102,7 +102,7 @@ addLayer("o", {
         },
         13: {
             title: "Upgrade 3",
-            description: "Gain a power effect to point gain",
+            description: "Gain a power effect to dingus point gain",
             cost: new Decimal(3),
             effect() {
                 return player.points.add(1).pow(0.15)
