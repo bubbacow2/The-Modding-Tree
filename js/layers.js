@@ -55,58 +55,67 @@ addLayer("p", {
 })
 
 
-addLayer("o", {
-    name: "Ovulation", // This is optional, only used in a few places, If absent it just uses the layer id.
-    symbol: "O", // This appears on the layer's node. Default is the id with the first letter capitalized
-    position: 1, // Horizontal position within a row. By default it uses the layer id and sorts in alphabetical order
+// A side layer with achievements, with no prestige
+addLayer("a", {
     startData() { return {
         unlocked: true,
-		points: new Decimal(0),
+        points: new Decimal(0),
     }},
-    color: "#6849b1ff",
-    requires: new Decimal(10), // Can be a function that takes requirement increases into account
-    resource: "ovulation points", // Name of prestige currency
-    baseResource: "dingus points", // Name of resource prestige is based on
-    baseAmount() {return player.points}, // Get the current amount of baseResource
-    type: "normal", // normal: cost to gain currency depends on amount gained. static: cost depends on how much you already have
-    exponent: 0.5, // Prestige currency exponent
-    gainMult() { // Calculate the multiplier for main currency from bonuses
-        mult = new Decimal(1)
-        if (hasUpgrade('o', 13)) mult = mult.times(upgradeEffect('o', 13))
-        return mult
+    color: "yellow",
+    resource: "achievement power", 
+    row: "side",
+    tooltip() { // Optional, tooltip displays when the layer is locked
+        return ("Achievements")
     },
-    gainExp() { // Calculate the exponent on main currency from bonuses
-        return new Decimal(1)
-    },
-    row: 0, // Row the layer is in on the tree (0 is the first row)
-    hotkeys: [
-        {key: "o", description: "O: Reset for ovulation points", onPress(){if (canReset(this.layer)) doReset(this.layer)}},
-    ],
-    layerShown(){return true},
-    upgrades: {
+    achievementPopups: true,
+    achievements: {
         11: {
-            title: "Upgrade 1",
-            description: "Double dingus point gain",
-            cost: new Decimal(1),
+            image: "discord.png",
+            name: "Get me!",
+            done() {return true}, // This one is a freebie
+            goalTooltip: "How did this happen?", // Shows when achievement is not completed
+            doneTooltip: "You did it!", // Showed when the achievement is completed
         },
         12: {
-            title: "Upgrade 2",
-            description: "Gain a multiplier to dingus point gain based on points",
-            cost: new Decimal(2),
-            effect() {
-                return player[this.layer].points.add(1).pow(0.5)
-            },
-            effectDisplay() { 
-                return format(upgradeEffect(this.layer, this.id))+"x" 
-            }, // Add formatting to the effect
+            name: "Impossible!",
+            done() {return false},
+            goalTooltip: "Mwahahaha!", // Shows when achievement is not completed
+            doneTooltip: "HOW????", // Showed when the achievement is completed
+            textStyle: {'color': '#04e050'},
         },
         13: {
-            title: "Upgrade 3",
-            description: "Gain a power effect to dingus point gain",
-            cost: new Decimal(3),
-            effect() {
-                return player.points.add(1).pow(0.15)
-            },
+            name: "EIEIO",
+            done() {return player.f.points.gte(1)},
+            tooltip: "Get a farm point.\n\nReward: The dinosaur is now your friend (you can max Farm Points).", // Showed when the achievement is completed
+            onComplete() {console.log("Bork bork bork!")}
         },
     },
-})
+    midsection: ["grid", "blank"],
+    grid: {
+        maxRows: 3,
+        rows: 2,
+        cols: 2,
+        getStartData(id) {
+            return id
+        },
+        getUnlocked(id) { // Default
+            return true
+        },
+        getCanClick(data, id) {
+            return player.points.eq(10)
+        },
+        getStyle(data, id) {
+            return {'background-color': '#'+ (data*1234%999999)}
+        },
+        onClick(data, id) { // Don't forget onHold
+            player[this.layer].grid[id]++
+        },
+        getTitle(data, id) {
+            return "Gridable #" + id
+        },
+        getDisplay(data, id) {
+            return data
+        },
+    },
+},
+)
