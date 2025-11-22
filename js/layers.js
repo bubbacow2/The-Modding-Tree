@@ -7,7 +7,7 @@ addLayer("p", {
 		points: new Decimal(0),
     }},
     color: "#596454ff",
-    requires: new Decimal(0), // Can be a function that takes requirement increases into account
+    requires: new Decimal(10), // Can be a function that takes requirement increases into account
     resource: "dingus points", // Name of prestige currency
     baseResource: "points", // Name of resource prestige is based on
     baseAmount() {return player.points}, // Get the current amount of baseResource
@@ -62,7 +62,7 @@ addLayer("o", {
         unlocked: true,
 		points: new Decimal(0),
     }},
-    color: "#231a38ff",
+    color: "#6849b1ff",
     requires: new Decimal(1000), // Can be a function that takes requirement increases into account
     resource: "ovulation points", // Name of prestige currency
     baseResource: "points", // Name of resource prestige is based on
